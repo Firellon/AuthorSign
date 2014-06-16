@@ -13,35 +13,34 @@ var server = app.listen(3000, function() {
 var tableArray = [];
 readCsv(__dirname + '/authorSign.csv');
 // Routes
-app.get('/az', function(req, res) {
-    var parsedUrl = url.parse(req.url, true);
+app.get('/az', function(request, response) {
+    var parsedUrl = url.parse(request.url, true);
     var queryObj = parsedUrl.query;
     if (queryObj.surname) {
-        var question = queryObj.surname.toLowerCase();
-    	var answer = findAZbySurname(question);
+    	var answer = findAZbySurname(queryObj.surname.toLowerCase());
     	if (answer) {
-    		res.json({surname: question, az: answer});
+    		response.send('{"surname":"'+queryObj.surname.toLowerCase()+'", "az": "'+answer+'" }');
     	} else {
-    		res.json({error:"invalid type of surname"});
+    		response.send('{"error":"invalid type of surname"}');
     	}
 	} else {
-    	res.json({error:"no surname in request"});
+    	response.send('{"error":"no surname in request"}');
 	}
 });
 
 // Search for matches
 function findAZbySurname(surname) {
-	//var startTime = Date.now();
+	var startTime = Date.now();
     function findLongest(str) {
     	var result = 0;
     	var resultWord = "";
     	var resultLength = 0;
-        for (var j=0; j < tableArray.length; j++) {
-        	var checkWord = tableArray[j][1];
+        for (var j=0; j < tableArray[0].length; j++) {
+        	var checkWord = tableArray[0][j][1];
         	var checkLength = checkWord.length;
             if (checkLength > resultLength && checkLength < str.length) {
             	if (str.substring(0,checkLength) == checkWord) {
-            		result = tableArray[j][0];
+            		result = tableArray[0][j][0];
             		resultWord = checkWord;
             		resultLength = checkLength;
             	}
@@ -55,24 +54,28 @@ function findAZbySurname(surname) {
     } else {
     	result = false;
     }
-    // var endTime = (Date.now() - startTime)/1000;
-    // console.log('Time spent on resolving request <'+surname+'> in seconds: ' + endTime);
+    var endTime = (Date.now() - startTime)/1000;
+    //console.log('Time spent on resolving request <'+surname+'> in seconds: ' + endTime);
     return result;
 }
 // Database preparing
 function readCsv(csvFile) {
-	//var startTime = Date.now();
+	var startTime = Date.now();
     csv()
     .from.stream(fs.createReadStream(csvFile))
     .to.array( function(data){
-        tableArray = data;
+        tableArray.push(data);
+    })
+    .on('record',function(row, index) {
+        //addTree(row[1],row[0],0);
     })
     .on('end', function(count){
         console.log('Database processed into array. Number of lines: '+count);
-        //var endTime = (Date.now() - startTime)/1000;
+        var endTime = (Date.now() - startTime)/1000;
         //console.log('Time spent on database processing in seconds: ' + endTime);
     })
     .on('error', function(error){
       console.log("ERROR "+error.message);
     });
 }
+// Tree constructing

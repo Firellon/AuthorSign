@@ -3,7 +3,7 @@ AuthorSign
 
 Launch:
 
-`nodejs server_as.js`
+`nodejs_server_as.js`
 
 Expect this:
 
@@ -13,15 +13,15 @@ Expect this:
 
 Then you can go URL:
 
-*http://localhost:3000/az?surname=`insert author's surname here`*
+`http://localhost:3000/az?surname=insert author's surname here`
 
 Example:
 
-[click here](http://localhost:3000/az?surname=%D0%90%D0%BD%D0%B8%D1%81%D0%B8%D0%BC%D0%BE%D0%B2)
+http://localhost:3000/az?surname=Петров
 
 If you wrote correct surname, you'll get something like this:
 
-`{"surname":"анисимов", "az": "А67" }`
+`{"surname":"петров", "az": "П30" }`
 
 Else, if you wrote surname of incorrect type, you will get
 
