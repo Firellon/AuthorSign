@@ -13,18 +13,18 @@ var server = app.listen(3000, function() {
 var tableArray = [];
 readCsv(__dirname + '/authorSign.csv');
 // Routes
-app.get('/az', function(request, response) {
-    var parsedUrl = url.parse(request.url, true);
+app.get('/az', function(req, res) {
+    var parsedUrl = url.parse(req.url, true);
     var queryObj = parsedUrl.query;
     if (queryObj.surname) {
     	var answer = findAZbySurname(queryObj.surname.toLowerCase());
     	if (answer) {
-    		response.send('{"surname":"'+queryObj.surname.toLowerCase()+'", "az": "'+answer+'" }');
+    		res.send('{"surname":"'+queryObj.surname.toLowerCase()+'", "az": "'+answer+'" }');
     	} else {
-    		response.send('{"error":"invalid type of surname"}');
+    		res.send('{"error":"invalid type of surname"}');
     	}
 	} else {
-    	response.send('{"error":"no surname in request"}');
+    	res.send('{"error":"no surname in request"}');
 	}
 });
 
