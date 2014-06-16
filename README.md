@@ -32,3 +32,5 @@ Else, if you hadn't written surname at all, you'll absolutely get
 `{"error":"no surname in request"}`
 
 Have fun!
+
+*P.S. I've used JSON.stringify in output because sending pure JSON is completely not understandable (I've got some abracadabra each time I used res.JSON)*

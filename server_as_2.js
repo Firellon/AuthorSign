@@ -16,16 +16,21 @@ readCsv(__dirname + '/authorSign.csv');
 app.get('/az', function(req, res) {
     var parsedUrl = url.parse(req.url, true);
     var queryObj = parsedUrl.query;
+    var resp = new Object();
     if (queryObj.surname) {
-    	var answer = findAZbySurname(queryObj.surname.toLowerCase());
+        var question = queryObj.surname.toLowerCase();
+    	var answer = findAZbySurname(question);
     	if (answer) {
-    		res.send('{"surname":"'+queryObj.surname.toLowerCase()+'", "az": "'+answer+'" }');
+            resp.surname = question;
+            resp.az = answer;
     	} else {
-    		res.send('{"error":"invalid type of surname"}');
+            resp.error = "invalid type of surname";
     	}
 	} else {
-    	res.send('{"error":"no surname in request"}');
+    	resp.error = "no surname in request";
 	}
+    //res.json(resp);
+    res.send(JSON.stringify(resp));
 });
 
 // Search for matches
