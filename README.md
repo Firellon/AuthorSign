@@ -13,7 +13,7 @@ Expect this:
 
 Then you can go URL:
 
-*http://localhost:3000/az?surname=<insert author's surname here>*
+*http://localhost:3000/az?surname=`insert author's surname here`*
 
 Example:
 
