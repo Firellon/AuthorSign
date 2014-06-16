@@ -66,9 +66,6 @@ function readCsv(csvFile) {
     .to.array( function(data){
         tableArray.push(data);
     })
-    .on('record',function(row, index) {
-        //addTree(row[1],row[0],0);
-    })
     .on('end', function(count){
         console.log('Database processed into array. Number of lines: '+count);
         var endTime = (Date.now() - startTime)/1000;
@@ -78,4 +75,3 @@ function readCsv(csvFile) {
       console.log("ERROR "+error.message);
     });
 }
-// Tree constructing
